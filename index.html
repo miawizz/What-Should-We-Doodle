@@ -1,77 +1,934 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<title>What Should We Doodle?</title>
+  <title>What Should We Doodle?</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
-<link rel="manifest" href="manifest.json">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#f8b934" />
 
-<style>
-body {
-  font-family: Poppins, sans-serif;
-  text-align: center;
-  background: #fff9f3;
-  padding: 2rem;
-}
+  <link rel="icon" type="image/png" href="WSWDgraphic.png">
+  <link rel="apple-touch-icon" href="WSWDgraphic.png">
 
-.slot {
-  font-size: 2rem;
-  margin: 10px;
-  font-weight: 800;
-}
+  <style>
+    :root {
+      --cream:#fff9f3;
+      --ink:#3c3c3c;
+      --yellow:#f8b934;
+      --pink:#d94b7f;
+      --teal:#127490;
+      --coral:#e86f5c;
+      --muted:#6b7f88;
+    }
 
-button {
-  padding: 1rem 1.5rem;
-  border-radius: 20px;
-  border: none;
-  background: #d94b7f;
-  color: white;
-  font-weight: 600;
-  cursor: pointer;
-}
+    * { box-sizing: border-box; }
 
-#prompt {
-  margin-top: 20px;
-  font-size: 1.2rem;
-}
-</style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Poppins', sans-serif;
+      text-align: center;
+    }
+
+    a.home-button {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      background: rgba(0, 0, 0, 0.75);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      z-index: 10002;
+    }
+
+    .logo {
+      max-width: 170px;
+      border-radius: 24px;
+      margin: 2.25rem auto 1rem;
+      box-shadow: 0 4px 14px rgba(0,0,0,.08);
+    }
+
+    h1 {
+      color: var(--teal);
+      font-size: 1.75rem;
+      line-height: 1.15;
+      margin: .5rem auto;
+      max-width: 780px;
+      font-weight: 800;
+    }
+
+    .subtitle {
+      max-width: 680px;
+      margin: 0 auto 1.5rem;
+      color: #555;
+      font-size: 1rem;
+      line-height: 1.45;
+    }
+
+    .slot-card {
+      max-width: 860px;
+      margin: 1.5rem auto;
+      background: var(--yellow);
+      border-radius: 28px;
+      padding: 1.25rem;
+      box-shadow: 0 6px 20px rgba(0,0,0,.08);
+    }
+
+    .slot-machine {
+      display: grid;
+      gap: .75rem;
+      grid-template-columns: 1fr;
+      margin: 0 auto 1rem;
+    }
+
+    .slot {
+      background: var(--pink);
+      color: #fff9f3;
+      border-radius: 18px;
+      padding: 1rem .8rem;
+      min-height: 72px;
+      display: grid;
+      place-items: center;
+      font-size: clamp(1.25rem, 7vw, 2.7rem);
+      line-height: 1;
+      font-weight: 800;
+      text-transform: uppercase;
+      box-shadow: inset 0 -4px 0 rgba(0,0,0,.08);
+      word-break: break-word;
+    }
+
+    .slot:nth-child(2) { background: var(--teal); }
+    .slot:nth-child(3) { background: var(--coral); }
+
+    .prompt-sentence {
+      background: rgba(255,255,255,.9);
+      border: 2px dashed #fff;
+      border-radius: 18px;
+      max-width: 760px;
+      margin: 1rem auto 0;
+      padding: 1rem;
+      font-size: 1.15rem;
+      line-height: 1.45;
+      font-weight: 600;
+      color: #53322b;
+    }
+
+    .btns {
+      display:flex;
+      gap:.6rem;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin: 1rem auto;
+    }
+
+    button {
+      background-color: var(--teal);
+      color: #fff;
+      border: none;
+      padding: 1rem 1.2rem;
+      border-radius: 30px;
+      font-size: 1.02rem;
+      cursor: pointer;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(0,0,0,.08);
+      font-family: inherit;
+    }
+
+    button:hover { filter: brightness(.96); }
+    button[disabled]{ opacity:.5; cursor:not-allowed; }
+
+    .btn-main {
+      background: var(--pink);
+      font-size: 1.12rem;
+      padding: 1.05rem 1.45rem;
+    }
+
+    .btn-secondary {
+      background:#ffe9d6;
+      color:#6b3a28;
+    }
+
+    .section {
+      max-width: 860px;
+      margin: 2rem auto 0;
+      text-align: left;
+    }
+
+    .section h2 {
+      color: var(--teal);
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    details {
+      background: #fff;
+      border: 1px solid #ffdcbf;
+      border-radius: 16px;
+      padding: .9rem 1rem;
+      margin: .75rem 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,.04);
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 800;
+      color: #7a3e2e;
+    }
+
+    details p, details li {
+      color: #555;
+      line-height: 1.45;
+    }
+
+    #favWrap{
+      max-width:860px;
+      margin:2rem auto 0;
+      text-align:left;
+    }
+
+    #favHeader{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      flex-wrap: wrap;
+    }
+
+    #favHeader h3{
+      margin:0;
+      color:#7a3e2e;
+      font-size:1.1rem;
+    }
+
+    #favList{
+      list-style:none;
+      padding:0;
+      margin:12px 0 0;
+      display:grid;
+      grid-template-columns:1fr;
+      gap:10px;
+    }
+
+    .favItem{
+      background:#fff;
+      border:1px solid #ffdcbf;
+      border-radius:14px;
+      padding:12px 14px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:12px;
+      box-shadow:0 2px 8px rgba(0,0,0,.04);
+    }
+
+    .favText{ font-size:.98rem; line-height:1.35rem; }
+
+    .favActions{
+      display:flex;
+      gap:8px;
+      flex-shrink:0;
+      flex-wrap: wrap;
+    }
+
+    .iconBtn{
+      border:0;
+      background:#ffe9d6;
+      color:#6b3a28;
+      padding:.45rem .7rem;
+      border-radius:10px;
+      font-size:.9rem;
+      cursor:pointer;
+    }
+
+    .muted{ color:var(--muted); font-size:.9rem; }
+
+    footer {
+      font-size: .9rem;
+      color: #777;
+      margin: 3rem auto 0;
+      max-width: 780px;
+      line-height: 1.5;
+    }
+
+    #toast{
+      position:fixed;
+      left:50%;
+      bottom:24px;
+      transform:translateX(-50%);
+      background:var(--teal);
+      color:#fff;
+      padding:10px 14px;
+      border-radius:12px;
+      box-shadow:0 8px 24px rgba(0,0,0,.18);
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .25s ease, transform .25s ease;
+      font-size:.95rem;
+      z-index:9999;
+    }
+
+    #toast.show{
+      opacity:1;
+      transform:translateX(-50%) translateY(-4px);
+    }
+
+    #courtesyOverlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.4);
+      display: none;
+      place-items: center;
+      z-index: 9999;
+      opacity: 1;
+      transition: opacity .3s ease;
+    }
+
+    .courtesy-card {
+      width: min(560px, 92%);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 18px;
+      box-shadow: 0 12px 40px rgba(0,0,0,.18);
+      padding: 22px;
+      text-align: left;
+    }
+
+    .courtesy-card h2 {
+      margin: 0 0 8px;
+      color: var(--teal);
+      font-size: 20px;
+    }
+
+    .courtesy-check {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin: 6px 0 12px;
+    }
+
+    #courtesyContinue {
+      width: 100%;
+      padding: 12px 14px;
+      border: 0;
+      border-radius: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      background: var(--pink);
+      color: #fff;
+    }
+
+    #courtesyContinue:disabled { opacity: .5; cursor: not-allowed; }
+
+    .install-help {
+      position:sticky;
+      top:0;
+      z-index:10001;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+      margin: -2rem -2rem 0;
+      text-align: left;
+    }
+
+    .install-help__wrap{
+      background:#fff7f4;
+      border-bottom:1px solid #f2e7e3;
+    }
+
+    .install-help__summary{
+      display:flex;
+      align-items:center;
+      gap:.5rem;
+      padding:.55rem .85rem;
+      cursor:pointer;
+      font-size:.95rem;
+    }
+
+    summary.install-help__wrap::-webkit-details-marker{display:none}
+    summary.install-help__wrap::marker{content:'';font-size:0}
+
+    .install-help__summary .caret{
+      transition:transform .2s ease;
+      width:40px;
+      height:40px;
+    }
+
+    details[open] .install-help__summary .caret{ transform:rotate(180deg); }
+
+    .install-help__panel{
+      padding:.75rem .9rem .95rem .9rem;
+      display:grid;
+      gap:.75rem;
+      background:#fff7f4;
+    }
+
+    .install-help__close{
+      all:unset;
+      display:inline-grid;
+      place-items:center;
+      width:32px;
+      height:32px;
+      cursor:pointer;
+      color:#000;
+      line-height:1;
+      font-weight:700;
+      margin-left: auto;
+    }
+
+    .install-help__box{
+      border:1px solid #efdfda;
+      background:#fff;
+      border-radius:.65rem;
+      padding:.65rem .75rem;
+    }
+
+    .install-help__steps{ margin:.25rem 0 0 1.15rem; }
+    .install-help__steps li{ margin:.25rem 0; }
+    .install-help__tips{ font-size:.85rem; opacity:.9; }
+
+    .install-help__never{
+      align-self:start;
+      border:0;
+      background:transparent;
+      padding:0;
+      font:inherit;
+      color:#6b7f88;
+      text-decoration:underline;
+      cursor:pointer;
+      box-shadow: none;
+    }
+
+    .hidden{display:none}
+
+    @media (min-width: 720px) {
+      .slot-machine { grid-template-columns: 1fr 1fr 1.2fr; }
+      .slot {
+        min-height: 130px;
+        font-size: clamp(1.3rem, 3.4vw, 2.6rem);
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <a href="https://miawizz.github.io/php-app-hub/" class="home-button">← Back to Hub</a>
 
-<h1>What Should We Doodle?</h1>
+  <details class="install-help" id="install-help" data-dismiss-key="ph-install-help-wswd">
+    <summary class="install-help__wrap">
+      <div class="install-help__summary" role="button" aria-expanded="false">
+        <svg class="caret" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5z"></path></svg>
+        <strong>Tap here for a reminder of how to save this app to your home screen</strong>
+        <button class="install-help__close" type="button" title="Hide">✖</button>
+      </div>
+    </summary>
 
-<div class="slot" id="adj">---</div>
-<div class="slot" id="sub">---</div>
-<div class="slot" id="act">---</div>
+    <div class="install-help__panel" id="install-help-panel" aria-live="polite">
+      <div class="install-help__box" id="ios-safari" hidden>
+        <h4>iPhone or iPad using Safari</h4>
+        <ol class="install-help__steps">
+          <li>Tap the Share icon at the bottom of Safari</li>
+          <li>Choose <em>Add to Home Screen</em></li>
+          <li>Tap <em>Add</em></li>
+        </ol>
+      </div>
 
-<button onclick="generate()">What should we doodle?</button>
+      <div class="install-help__box" id="ios-chrome" hidden>
+        <h4>iPhone or iPad using Chrome</h4>
+        <ol class="install-help__steps">
+          <li>Tap the Share icon in the top right</li>
+          <li>Scroll and choose <em>Add to Home Screen</em></li>
+          <li>Tap <em>Add</em></li>
+        </ol>
+        <p class="install-help__tips">If you do not see this option, open the app in Safari and use the same steps</p>
+      </div>
 
-<div id="prompt">Tap to mix up something silly</div>
+      <div class="install-help__box" id="android-chrome" hidden>
+        <h4>Android using Chrome</h4>
+        <ol class="install-help__steps">
+          <li>Tap the three dot menu in the top right</li>
+          <li>Choose <em>Install app</em> or <em>Add to Home screen</em></li>
+          <li>Confirm <em>Install</em></li>
+        </ol>
+      </div>
 
-<script src="words.js"></script>
+      <div class="install-help__box" id="android-samsung" hidden>
+        <h4>Android using Samsung Internet</h4>
+        <ol class="install-help__steps">
+          <li>Tap the menu button</li>
+          <li>Select <em>Add page to</em> then <em>Home screen</em></li>
+          <li>Confirm</li>
+        </ol>
+      </div>
 
-<script>
-function rand(arr){
-  return arr[Math.floor(Math.random()*arr.length)]
-}
+      <div class="install-help__box" id="other-browsers" hidden>
+        <h4>Other browsers</h4>
+        <p>Look in the browser menu for <em>Install</em> or <em>Add to Home Screen</em></p>
+      </div>
 
-function generate(){
-  const a = rand(adjectives)
-  const s = rand(subjects)
-  const ac = rand(actions)
+      <p class="install-help__tips">Installing adds an icon to your home screen and makes it function just like an app</p>
 
-  document.getElementById("adj").innerText = a
-  document.getElementById("sub").innerText = s
-  document.getElementById("act").innerText = ac
+      <button type="button" id="install-help-never" class="install-help__never">Don’t show this again</button>
+    </div>
+  </details>
 
-  document.getElementById("prompt").innerText =
-    a + " " + s + " " + ac
-}
-</script>
+  <section id="courtesyOverlay" role="dialog" aria-labelledby="courtesyTitle" aria-modal="true">
+    <div class="courtesy-card">
+      <h2 id="courtesyTitle">Thanks for supporting this work</h2>
+      <p>Please do not share this link.</p>
+      <label class="courtesy-check">
+        <input type="checkbox" id="courtesyAck" />
+        <span>I understand — got it!</span>
+      </label>
+      <button id="courtesyContinue" disabled>Continue</button>
+    </div>
+  </section>
 
+  <main>
+    <img src="WSWDgraphic.png" alt="What Should We Doodle logo" class="logo" />
+
+    <h1>WHAT SHOULD WE DOODLE?</h1>
+
+    <p class="subtitle">
+      Mix up a silly drawing prompt, grab something to draw with, and see how everyone imagines it differently.
+      Bad drawings absolutely welcome.
+    </p>
+
+    <section class="slot-card" aria-label="Doodle prompt generator">
+      <div class="slot-machine">
+        <div class="slot" id="slotAdjective">WHAT</div>
+        <div class="slot" id="slotNoun">SHOULD</div>
+        <div class="slot" id="slotAction">WE DOODLE?</div>
+      </div>
+
+      <div class="prompt-sentence" id="prompt">
+        Tap the button to mix up something ridiculous.
+      </div>
+
+      <div class="btns">
+        <button class="btn-main" id="btnNext">What should we doodle?</button>
+      </div>
+
+      <div class="btns">
+        <button id="btnBack">Back</button>
+        <button id="btnFwd">Forward</button>
+      </div>
+
+      <div class="btns">
+        <button id="btnSave" class="btn-secondary">Save to Favorites</button>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Ways to Play</h2>
+
+      <details>
+        <summary>Everyone Draws It</summary>
+        <p>Mix up a prompt and everyone draws their own version. Reveal at the same time and enjoy how differently everyone pictured it.</p>
+      </details>
+
+      <details>
+        <summary>Pass the Doodle</summary>
+        <p>One person starts drawing. After 30 seconds, pass it to the next person. Keep going until the drawing becomes wonderfully weird.</p>
+      </details>
+
+      <details>
+        <summary>Guess the Doodle</summary>
+        <p>One person draws the prompt while everyone else guesses what it is. The drawer cannot talk, but dramatic facial expressions are allowed.</p>
+      </details>
+
+      <details>
+        <summary>One Line Each</summary>
+        <p>Take turns adding only one line, shape, or detail at a time. Nobody gets to control where it ends up.</p>
+      </details>
+
+      <details>
+        <summary>Caption That</summary>
+        <p>Each person secretly gets a different prompt and draws it. When everyone is done, pass your paper to the next person, who writes a funny caption underneath the drawing based on what they think is happening.</p>
+        <p>Fold the paper back so only the caption is showing, then pass again. The next person draws a brand-new picture underneath based only on that caption.</p>
+        <p>Keep alternating captions and drawings until the paper is full, then unfold everything at the end to reveal the wonderfully ridiculous journey.</p>
+        <p>If you only have two players, just secretly draw your prompt, swap papers, and caption each other’s drawings.</p>
+        <p>This game works best with kids who can read and write independently since the prompts stay secret.</p>
+      </details>
+    </section>
+
+    <section id="favWrap" aria-labelledby="favTitle">
+      <div id="favHeader">
+        <h3 id="favTitle">Favorites</h3>
+        <div class="btns" style="margin-top:0;">
+          <button class="btn-secondary" id="btnCopyAll">Copy All</button>
+          <button class="btn-secondary" id="btnClear">Clear</button>
+        </div>
+      </div>
+      <p class="muted" id="favEmpty">No favorites yet. Save any you love.</p>
+      <ul id="favList"></ul>
+    </section>
+
+    <footer>
+      © 2026 Mia Wisinski, Playful Heart Parenting. This app is for personal use only by those who have purchased from Playful Heart Parenting. Please do not share this link publicly or distribute without explicit permission.
+    </footer>
+  </main>
+
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script src="words.js"></script>
+
+  <script>
+    (function(){
+      const root = document.getElementById('install-help');
+      const closeBtn = root.querySelector('.install-help__close');
+      const key = root.getAttribute('data-dismiss-key') || 'ph-install-help::' + location.pathname;
+
+      if(localStorage.getItem(key)==='1'){
+        root.classList.add('hidden');
+        return;
+      }
+
+      closeBtn.addEventListener('click', function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        localStorage.setItem(key,'1');
+        root.classList.add('hidden');
+      });
+
+      document.getElementById('install-help-never').addEventListener('click', function(){
+        localStorage.setItem(key,'1');
+        root.classList.add('hidden');
+      });
+
+      const ua = navigator.userAgent || '';
+      const isIOS = /iPad|iPhone|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      const isAndroid = /Android/i.test(ua);
+      const isSamsung = /SamsungBrowser/i.test(ua);
+      const isCriOS = /CriOS/i.test(ua);
+      const isFxiOS = /FxiOS/i.test(ua);
+      const isSafari = isIOS && /Safari/i.test(ua) && !isCriOS && !isFxiOS;
+      const isChromeAndroid = isAndroid && /Chrome/i.test(ua) && !isSamsung;
+
+      function show(id){
+        const el = document.getElementById(id);
+        if(el) el.hidden = false;
+      }
+
+      if(isIOS && isSafari) show('ios-safari');
+      else if(isIOS && isCriOS) show('ios-chrome');
+      else if(isAndroid && isSamsung) show('android-samsung');
+      else if(isChromeAndroid) show('android-chrome');
+      else show('other-browsers');
+
+      const label = root.querySelector('.install-help__summary strong');
+      root.addEventListener('toggle', function(){
+        label.textContent = root.open ? 'Hide instructions' : 'Tap here for a reminder of how to save this app to your home screen';
+      });
+    })();
+
+    (function(){
+      const COURTESY_KEY = 'wswd_courtesy_v1';
+      const overlay = document.getElementById('courtesyOverlay');
+      const ack = document.getElementById('courtesyAck');
+      const goBtn = document.getElementById('courtesyContinue');
+
+      if (localStorage.getItem(COURTESY_KEY) !== 'yes') {
+        overlay.style.display = 'grid';
+        ack.addEventListener('change', () => {
+          goBtn.disabled = !ack.checked;
+        });
+        goBtn.addEventListener('click', () => {
+          localStorage.setItem(COURTESY_KEY, 'yes');
+          overlay.style.opacity = '0';
+          setTimeout(() => {
+            overlay.style.display = 'none';
+            overlay.style.opacity = '1';
+          }, 320);
+        });
+      }
+    })();
+
+    const APP_NS = 'wswd';
+    const K = (s) => `${APP_NS}_${s}`;
+    const KEY_HIST = K('hist');
+    const KEY_HPOS = K('hpos');
+    const KEY_FAVS = K('favs');
+
+    const slotAdjective = document.getElementById('slotAdjective');
+    const slotNoun = document.getElementById('slotNoun');
+    const slotAction = document.getElementById('slotAction');
+    const elPrompt = document.getElementById('prompt');
+
+    const btnNext = document.getElementById('btnNext');
+    const btnBack = document.getElementById('btnBack');
+    const btnFwd = document.getElementById('btnFwd');
+    const btnSave = document.getElementById('btnSave');
+
+    const favListEl = document.getElementById('favList');
+    const favEmptyEl = document.getElementById('favEmpty');
+    const toastEl = document.getElementById('toast');
+
+    const loadingPhrases = [
+      'Cooking up something weird...',
+      'Mixing up a silly idea...',
+      'Doodling in our imagination...',
+      'Finding a ridiculous combo...',
+      'Preparing your next masterpiece...'
+    ];
+
+    function randomFrom(list) {
+      return list[Math.floor(Math.random() * list.length)];
+    }
+
+    function makePrompt() {
+      return {
+        adjective: randomFrom(adjectives),
+        subject: randomFrom(subjects),
+        action: randomFrom(actions)
+      };
+    }
+
+    function promptToText(p) {
+      return `${capitalize(p.adjective)} ${p.subject} ${p.action}`;
+    }
+
+    function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+
+    function loadJSON(key, fallback) {
+      try {
+        return JSON.parse(localStorage.getItem(key)) || fallback;
+      } catch {
+        return fallback;
+      }
+    }
+
+    function saveJSON(key, value) {
+      localStorage.setItem(key, JSON.stringify(value));
+    }
+
+    let history = loadJSON(KEY_HIST, []);
+    let hpos = parseInt(localStorage.getItem(KEY_HPOS) || String(history.length), 10);
+    let favorites = loadJSON(KEY_FAVS, []);
+
+    hpos = Math.min(Math.max(0, hpos), history.length);
+
+    function showPrompt(p) {
+      slotAdjective.textContent = p.adjective;
+      slotNoun.textContent = p.subject;
+      slotAction.textContent = p.action;
+      elPrompt.textContent = promptToText(p);
+    }
+
+    function currentPrompt() {
+      if (!history.length || hpos === 0) return null;
+      return history[hpos - 1];
+    }
+
+    function updateNav() {
+      btnBack.disabled = hpos <= 1;
+      btnFwd.disabled = hpos >= history.length;
+    }
+
+    function samePrompt(a, b) {
+      return a && b && a.adjective === b.adjective && a.subject === b.subject && a.action === b.action;
+    }
+
+    function isFav(p) {
+      return favorites.some(f => samePrompt(f, p));
+    }
+
+    function updateSaveBtn() {
+      const p = currentPrompt();
+      if (!p) {
+        btnSave.disabled = true;
+        btnSave.textContent = 'Save to Favorites';
+        return;
+      }
+      btnSave.disabled = false;
+      btnSave.textContent = isFav(p) ? 'Saved' : 'Save to Favorites';
+    }
+
+    function saveState() {
+      saveJSON(KEY_HIST, history);
+      localStorage.setItem(KEY_HPOS, String(hpos));
+    }
+
+    function animateSlots(finalPrompt) {
+      let count = 0;
+      const flips = 10;
+
+      const interval = setInterval(() => {
+        slotAdjective.textContent = randomFrom(adjectives);
+        slotNoun.textContent = randomFrom(subjects);
+        slotAction.textContent = randomFrom(actions);
+        count++;
+
+        if (count >= flips) {
+          clearInterval(interval);
+          showPrompt(finalPrompt);
+        }
+      }, 70);
+    }
+
+    function next() {
+      if (hpos < history.length) {
+        history.splice(hpos);
+      }
+
+      const p = makePrompt();
+      history.push(p);
+
+      if (history.length > 500) {
+        history.splice(0, history.length - 500);
+      }
+
+      hpos = history.length;
+      elPrompt.textContent = randomFrom(loadingPhrases);
+      animateSlots(p);
+      saveState();
+      updateNav();
+      updateSaveBtn();
+    }
+
+    function back() {
+      if (hpos > 1) {
+        hpos -= 1;
+        showPrompt(history[hpos - 1]);
+        saveState();
+        updateNav();
+        updateSaveBtn();
+      }
+    }
+
+    function forward() {
+      if (hpos < history.length) {
+        hpos += 1;
+        showPrompt(history[hpos - 1]);
+        saveState();
+        updateNav();
+        updateSaveBtn();
+      }
+    }
+
+    function saveCurrent() {
+      const p = currentPrompt();
+      if (!p) return;
+
+      if (!isFav(p)) {
+        favorites.push(p);
+        saveJSON(KEY_FAVS, favorites);
+        renderFavs();
+        updateSaveBtn();
+        toast('Saved to favorites');
+      } else {
+        toast('Already in favorites');
+      }
+    }
+
+    function removeFav(index) {
+      favorites.splice(index, 1);
+      saveJSON(KEY_FAVS, favorites);
+      renderFavs();
+      updateSaveBtn();
+      toast('Removed');
+    }
+
+    function renderFavs() {
+      favListEl.innerHTML = '';
+
+      if (!favorites.length) {
+        favEmptyEl.style.display = 'block';
+        return;
+      }
+
+      favEmptyEl.style.display = 'none';
+
+      favorites.forEach((p, index) => {
+        const li = document.createElement('li');
+        li.className = 'favItem';
+
+        const txt = document.createElement('div');
+        txt.className = 'favText';
+        txt.textContent = promptToText(p);
+
+        const actions = document.createElement('div');
+        actions.className = 'favActions';
+
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'iconBtn';
+        copyBtn.textContent = 'Copy';
+        copyBtn.onclick = () => {
+          navigator.clipboard.writeText(promptToText(p));
+          toast('Copied');
+        };
+
+        const delBtn = document.createElement('button');
+        delBtn.className = 'iconBtn';
+        delBtn.textContent = 'Remove';
+        delBtn.onclick = () => removeFav(index);
+
+        actions.appendChild(copyBtn);
+        actions.appendChild(delBtn);
+        li.appendChild(txt);
+        li.appendChild(actions);
+        favListEl.appendChild(li);
+      });
+    }
+
+    function copyAllFavs() {
+      if (!favorites.length) {
+        toast('No favorites to copy');
+        return;
+      }
+
+      const text = favorites.map(promptToText).join('\n');
+      navigator.clipboard.writeText(text);
+      toast('Favorites copied');
+    }
+
+    function clearFavs() {
+      favorites = [];
+      saveJSON(KEY_FAVS, favorites);
+      renderFavs();
+      updateSaveBtn();
+      toast('Favorites cleared');
+    }
+
+    let toastTimer = null;
+
+    function toast(msg) {
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toastEl.classList.remove('show'), 1200);
+    }
+
+    btnNext.addEventListener('click', next);
+    btnBack.addEventListener('click', back);
+    btnFwd.addEventListener('click', forward);
+    btnSave.addEventListener('click', saveCurrent);
+    document.getElementById('btnCopyAll').addEventListener('click', copyAllFavs);
+    document.getElementById('btnClear').addEventListener('click', clearFavs);
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Enter') next();
+      if (e.key === 'ArrowLeft') back();
+      if (e.key === 'ArrowRight') forward();
+      if (e.key.toLowerCase() === 's') saveCurrent();
+    });
+
+    if (history.length) {
+      hpos = history.length;
+      showPrompt(history[history.length - 1]);
+    }
+
+    updateNav();
+    renderFavs();
+    updateSaveBtn();
+    saveState();
+  </script>
 </body>
 </html>
