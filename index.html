@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>What Should We Doodle?</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+<link rel="manifest" href="manifest.json">
+
+<style>
+body {
+  font-family: Poppins, sans-serif;
+  text-align: center;
+  background: #fff9f3;
+  padding: 2rem;
+}
+
+.slot {
+  font-size: 2rem;
+  margin: 10px;
+  font-weight: 800;
+}
+
+button {
+  padding: 1rem 1.5rem;
+  border-radius: 20px;
+  border: none;
+  background: #d94b7f;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#prompt {
+  margin-top: 20px;
+  font-size: 1.2rem;
+}
+</style>
+</head>
+
+<body>
+
+<h1>What Should We Doodle?</h1>
+
+<div class="slot" id="adj">---</div>
+<div class="slot" id="sub">---</div>
+<div class="slot" id="act">---</div>
+
+<button onclick="generate()">What should we doodle?</button>
+
+<div id="prompt">Tap to mix up something silly</div>
+
+<script src="words.js"></script>
+
+<script>
+function rand(arr){
+  return arr[Math.floor(Math.random()*arr.length)]
+}
+
+function generate(){
+  const a = rand(adjectives)
+  const s = rand(subjects)
+  const ac = rand(actions)
+
+  document.getElementById("adj").innerText = a
+  document.getElementById("sub").innerText = s
+  document.getElementById("act").innerText = ac
+
+  document.getElementById("prompt").innerText =
+    a + " " + s + " " + ac
+}
+</script>
+
+</body>
+</html>
