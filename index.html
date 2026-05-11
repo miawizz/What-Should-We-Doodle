@@ -589,6 +589,7 @@
   <div id="toast" role="status" aria-live="polite"></div>
 
   <script src="words.js"></script>
+  <script src="https://upload-widget.cloudinary.com/global/all.js"></script>
 
   <script>
     (function(){
@@ -987,6 +988,26 @@ function randomFrom(list) {
       showPrompt(history[history.length - 1]);
     }
 
+    const uploadWidget = cloudinary.createUploadWidget({
+  cloudName: 'douw0mebw',
+  uploadPreset: 'doodles',
+  tags: ['doodles'],
+  sources: ['local', 'camera'],
+  multiple: false,
+  maxFiles: 1,
+  clientAllowedFormats: ['jpg', 'jpeg', 'png', 'webp'],
+  maxFileSize: 5000000
+}, (error, result) => {
+  if (!error && result && result.event === 'success') {
+    loadGallery();
+    toast('Doodle uploaded!');
+  }
+});
+
+document.getElementById('upload_widget').addEventListener('click', function(){
+  uploadWidget.open();
+});
+    
     updateNav();
     renderFavs();
     updateSaveBtn();
