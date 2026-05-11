@@ -504,7 +504,7 @@
   <section class="slot-card" aria-label="Doodle prompt generator">
     <div class="slot-machine">
       <div class="slot" id="slotAdjective">WHAT</div>
-      <div class="slot" id="slotNoun">SHOULD</div>
+      <div class="slot" id="slotSubject">SHOULD</div>
       <div class="slot" id="slotAction">WE DOODLE?</div>
     </div>
 
@@ -651,13 +651,23 @@
     })();
 
     const APP_NS = 'wswd';
+    const DATA_VERSION = 'v2'; // change this anytime you update structure
+const VERSION_KEY = APP_NS + '_version';
+
+// If version changed → clear old data
+if (localStorage.getItem(VERSION_KEY) !== DATA_VERSION) {
+  localStorage.removeItem(APP_NS + '_hist');
+  localStorage.removeItem(APP_NS + '_hpos');
+  localStorage.removeItem(APP_NS + '_favs');
+  localStorage.setItem(VERSION_KEY, DATA_VERSION);
+}
     const K = (s) => `${APP_NS}_${s}`;
     const KEY_HIST = K('hist');
     const KEY_HPOS = K('hpos');
     const KEY_FAVS = K('favs');
 
     const slotAdjective = document.getElementById('slotAdjective');
-    const slotNoun = document.getElementById('slotNoun');
+    const slotSubject = document.getElementById('slotSubject');
     const slotAction = document.getElementById('slotAction');
     const elPrompt = document.getElementById('prompt');
 
@@ -678,9 +688,10 @@
       'Preparing your next masterpiece...'
     ];
 
-    function randomFrom(list) {
-      return list[Math.floor(Math.random() * list.length)];
-    }
+function randomFrom(list) {
+  if (!list || list.length === 0) return "something weird";
+  return list[Math.floor(Math.random() * list.length)];
+}
 
     function makePrompt() {
       return {
@@ -711,6 +722,16 @@
     }
 
     let history = loadJSON(KEY_HIST, []);
+    history = history.map(p => {
+  if (p && !p.subject && p.noun) {
+    return {
+      adjective: p.adjective,
+      subject: p.noun,
+      action: p.action
+    };
+  }
+  return p;
+});
     let hpos = parseInt(localStorage.getItem(KEY_HPOS) || String(history.length), 10);
     let favorites = loadJSON(KEY_FAVS, []);
 
@@ -718,7 +739,7 @@
 
     function showPrompt(p) {
       slotAdjective.textContent = p.adjective;
-      slotNoun.textContent = p.subject;
+      slotSubject.textContent = p.subject;
       slotAction.textContent = p.action;
       elPrompt.textContent = promptToText(p);
     }
@@ -763,7 +784,7 @@
 
       const interval = setInterval(() => {
         slotAdjective.textContent = randomFrom(adjectives);
-        slotNoun.textContent = randomFrom(subjects);
+        slotSubject.textContent = randomFrom(subjects);
         slotAction.textContent = randomFrom(actions);
         count++;
 
