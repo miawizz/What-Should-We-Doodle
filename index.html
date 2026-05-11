@@ -988,31 +988,55 @@ function randomFrom(list) {
       showPrompt(history[history.length - 1]);
     }
 
-    const uploadWidget = cloudinary.createUploadWidget({
-  cloudName: 'douw0mebw',
-  uploadPreset: 'doodles',
-  tags: ['doodles'],
-  sources: ['local', 'camera'],
-  multiple: false,
-  maxFiles: 1,
-  clientAllowedFormats: ['jpg', 'jpeg', 'png', 'webp'],
-  maxFileSize: 5000000
-}, (error, result) => {
-  if (!error && result && result.event === 'success') {
-    loadGallery();
-    toast('Doodle uploaded!');
+function setupUploadWidget() {
+  const uploadButton = document.getElementById('upload_widget');
+
+  if (!uploadButton) {
+    console.log('Upload button not found');
+    return;
   }
-});
+
+  if (!window.cloudinary) {
+    console.log('Cloudinary widget did not load');
+    return;
+  }
+
+  const uploadWidget = cloudinary.createUploadWidget({
+    cloudName: 'douw0mebw',
+    uploadPreset: 'doodles',
+    tags: ['doodles'],
+    sources: ['local', 'camera'],
+    multiple: false,
+    maxFiles: 1,
+    clientAllowedFormats: ['jpg', 'jpeg', 'png', 'webp'],
+    maxFileSize: 5000000
+  }, (error, result) => {
+    if (error) {
+      console.log('Upload error:', error);
+      return;
+    }
+
+    if (result && result.event === 'success') {
+      loadGallery();
+      toast('Doodle uploaded!');
+    }
+  });
+
+  uploadButton.addEventListener('click', function() {
+    uploadWidget.open();
+  });
+}
 
 document.getElementById('upload_widget').addEventListener('click', function(){
   uploadWidget.open();
 });
     
-    updateNav();
-    renderFavs();
-    updateSaveBtn();
-    saveState();
-    loadGallery();
+updateNav();
+renderFavs();
+updateSaveBtn();
+saveState();
+loadGallery();
+setupUploadWidget();
   </script>
 </body>
 </html>
