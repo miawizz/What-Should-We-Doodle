@@ -1036,9 +1036,6 @@ function setupUploadWidget() {
 const uploadWidget = cloudinary.createUploadWidget({
   cloudName: 'douw0mebw',
   uploadPreset: 'doodles',
-  context: {
-  prompt: ''
-},
   tags: ['doodles'],
   sources: ['local', 'camera'],
   multiple: false,
@@ -1059,9 +1056,18 @@ const uploadWidget = cloudinary.createUploadWidget({
     }
   });
 
-  uploadButton.addEventListener('click', function() {
-    uploadWidget.open();
+uploadButton.addEventListener('click', function() {
+  const promptInput = document.getElementById('doodlePrompt');
+  const promptText = promptInput ? promptInput.value.trim() : '';
+
+  uploadWidget.update({
+    context: {
+      prompt: promptText
+    }
   });
+
+  uploadWidget.open();
+});
 }
     
 updateNav();
