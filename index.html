@@ -1054,13 +1054,14 @@ if (result && result.event === 'success') {
 
   const promptInput = document.getElementById('doodlePrompt');
 
-  fetch('https://script.google.com/macros/s/AKfycbwJ3SLtKpa_wSsXPoPR1z-VDaZks05pBN1dCF8HGU0yIkmFtibENVg2sEXe2ZceXW4p/exec', {
-    method: 'POST',
-    body: JSON.stringify({
-      prompt: promptInput ? promptInput.value : '',
-      imageUrl: result.info.secure_url
-    })
-  });
+fetch('https://script.google.com/macros/s/AKfycbwJ3SLtKpa_wSsXPoPR1z-VDaZks05pBN1dCF8HGU0yIkmFtibENVg2sEXe2ZceXW4p/exec', {
+  method: 'POST',
+  mode: 'no-cors',
+  body: JSON.stringify({
+    prompt: promptInput ? promptInput.value : '',
+    imageUrl: result.info.secure_url
+  })
+});
 
   if (promptInput) {
     promptInput.value = '';
