@@ -963,34 +963,46 @@ function randomFrom(list) {
       toast('Favorites cleared');
     }
 
-        async function loadGallery() {
-      try {
-        const res = await fetch('https://res.cloudinary.com/douw0mebw/image/list/doodles.json');
-        const data = await res.json();
+async function loadGallery() {
+  try {
+    const res = await fetch('https://script.google.com/macros/s/AKfycbwJ3SLtKpa_wSsXPoPR1z-VDaZks05pBN1dCF8HGU0yIkmFtibENVg2sEXe2ZceXW4p/exec');
+    const data = await res.json();
 
-        const gallery = document.getElementById('gallery');
-        if (!gallery) return;
+    const gallery = document.getElementById('gallery');
+    if (!gallery) return;
 
-        gallery.innerHTML = '';
+    gallery.innerHTML = '';
 
-        data.resources.forEach(img => {
-          const el = document.createElement('img');
+    data.forEach(item => {
+      const card = document.createElement('div');
+      card.style.width = '160px';
+      card.style.flex = '0 0 auto';
+      card.style.textAlign = 'center';
 
-          el.src = `https://res.cloudinary.com/douw0mebw/image/upload/w_400,q_auto,f_auto/${img.public_id}.${img.format}`;
-          el.alt = 'Family doodle';
-          el.style.width = '140px';
-          el.style.height = '140px';
-          el.style.objectFit = 'cover';
-          el.style.borderRadius = '16px';
-          el.style.boxShadow = '0 4px 12px rgba(0,0,0,.12)';
-          el.style.flex = '0 0 auto';
+      const el = document.createElement('img');
+      el.src = item.imageUrl;
+      el.alt = item.prompt || 'Family doodle';
+      el.style.width = '140px';
+      el.style.height = '140px';
+      el.style.objectFit = 'cover';
+      el.style.borderRadius = '16px';
+      el.style.boxShadow = '0 4px 12px rgba(0,0,0,.12)';
 
-          gallery.appendChild(el);
-        });
-      } catch (error) {
-        console.log('Gallery could not load yet:', error);
-      }
-    }
+      const caption = document.createElement('p');
+      caption.textContent = item.prompt || '';
+      caption.style.fontSize = '.78rem';
+      caption.style.lineHeight = '1.25';
+      caption.style.margin = '.4rem 0 0';
+      caption.style.color = '#53322b';
+
+      card.appendChild(el);
+      card.appendChild(caption);
+      gallery.appendChild(card);
+    });
+  } catch (error) {
+    console.log('Gallery could not load yet:', error);
+  }
+}
     
     let toastTimer = null;
 
