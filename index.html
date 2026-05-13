@@ -1025,6 +1025,9 @@ function setupUploadWidget() {
 const uploadWidget = cloudinary.createUploadWidget({
   cloudName: 'douw0mebw',
   uploadPreset: 'doodles',
+  context: {
+  prompt: ''
+},
   tags: ['doodles'],
   sources: ['local', 'camera'],
   multiple: false,
