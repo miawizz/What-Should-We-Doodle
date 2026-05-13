@@ -1060,13 +1060,7 @@ uploadButton.addEventListener('click', function() {
   const promptInput = document.getElementById('doodlePrompt');
   const promptText = promptInput ? promptInput.value.trim() : '';
 
-  uploadWidget.update({
-    context: {
-      prompt: promptText
-    }
-  });
-
-  uploadWidget.open();
+uploadWidget.open();
 });
 }
     
