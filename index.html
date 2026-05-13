@@ -962,7 +962,7 @@ function randomFrom(list) {
 
         gallery.innerHTML = '';
 
-        data.resources.slice().reverse().forEach(img => {
+        data.resources.forEach(img => {
           const el = document.createElement('img');
 
           el.src = `https://res.cloudinary.com/douw0mebw/image/upload/w_400,q_auto,f_auto/${img.public_id}.${img.format}`;
