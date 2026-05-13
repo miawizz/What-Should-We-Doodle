@@ -575,9 +575,20 @@
   <h2>The Doodle Gallery</h2>
   <p class="muted">Doodles shared by families playing along.</p>
 
-  <button class="btn-main" id="upload_widget" type="button">
-    Share Your Doodle!
-  </button>
+<label for="doodlePrompt" style="display:block; font-weight:700; margin-top:1rem; color:#53322b;">
+  What prompt did you draw?
+</label>
+
+<input
+  id="doodlePrompt"
+  type="text"
+  placeholder="Example: granny skateboarding on the moon"
+  style="width:min(520px, 100%); padding:.85rem 1rem; border-radius:14px; border:2px dashed #f8b934; font-family:Poppins, sans-serif; margin:.5rem auto 1rem; display:block;"
+/>
+
+<button class="btn-main" id="upload_widget" type="button">
+  Share Your Doodle!
+</button>
 
   <div id="gallery" style="display:flex; gap:10px; overflow-x:auto; padding:1rem 0; justify-content:flex-start;"></div>
 </section>
