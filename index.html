@@ -1022,16 +1022,18 @@ function setupUploadWidget() {
     return;
   }
 
-  const uploadWidget = cloudinary.createUploadWidget({
-    cloudName: 'douw0mebw',
-    uploadPreset: 'doodles',
-    tags: ['doodles'],
-    sources: ['local', 'camera'],
-    multiple: false,
-    maxFiles: 1,
-    clientAllowedFormats: ['jpg', 'jpeg', 'png', 'webp'],
-    maxFileSize: 5000000
-  }, (error, result) => {
+const uploadWidget = cloudinary.createUploadWidget({
+  cloudName: 'douw0mebw',
+  uploadPreset: 'doodles',
+  tags: ['doodles'],
+  sources: ['local', 'camera'],
+  multiple: false,
+  maxFiles: 1,
+  clientAllowedFormats: ['jpg', 'jpeg', 'png', 'webp', 'heic'],
+  maxFileSize: 20000000,
+  maxImageWidth: 1600,
+  maxImageHeight: 1600
+}, (error, result) => {
     if (error) {
       console.log('Upload error:', error);
       return;
@@ -1047,10 +1049,6 @@ function setupUploadWidget() {
     uploadWidget.open();
   });
 }
-
-document.getElementById('upload_widget').addEventListener('click', function(){
-  uploadWidget.open();
-});
     
 updateNav();
 renderFavs();
