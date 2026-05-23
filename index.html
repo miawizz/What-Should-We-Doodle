@@ -583,12 +583,22 @@
   id="doodlePrompt"
   type="text"
   placeholder="Example: granny skateboarding on the moon"
-  style="width:min(520px, 100%); padding:.85rem 1rem; border-radius:14px; border:2px dashed #f8b934; font-family:Poppins, sans-serif; margin:.5rem auto 1rem; display:block;"
+  style="width:min(520px, 100%); padding:.85rem 1rem; border-radius:14px; border:2px dashed #f8b934; font-family:Poppins, sans-serif; margin:.5rem auto .75rem; display:block;"
 />
 
-<button class="btn-main" id="upload_widget" type="button">
-  Share Your Doodle!
-</button>
+<div class="btns" style="margin-top:.25rem;">
+  <button class="btn-secondary" id="useCurrentPrompt" type="button">
+    Copy + Paste Current Prompt
+  </button>
+
+  <button class="btn-main" id="upload_widget" type="button" disabled>
+    Share Your Doodle!
+  </button>
+</div>
+
+<p id="uploadHint" class="muted" style="text-align:center; margin-top:.25rem;">
+  Please add the prompt title before uploading your doodle.
+</p>
 
   <div id="gallery" style="display:flex; gap:10px; overflow-x:auto; padding:1rem 0; justify-content:flex-start;"></div>
 </section>
@@ -1032,6 +1042,43 @@ async function loadGallery() {
       showPrompt(history[history.length - 1]);
     }
 
+function setupDoodlePromptField() {
+  const promptInput = document.getElementById('doodlePrompt');
+  const uploadButton = document.getElementById('upload_widget');
+  const useCurrentPromptButton = document.getElementById('useCurrentPrompt');
+  const uploadHint = document.getElementById('uploadHint');
+
+  if (!promptInput || !uploadButton) return;
+
+  function syncUploadButton() {
+    const hasPrompt = promptInput.value.trim().length > 0;
+    uploadButton.disabled = !hasPrompt;
+    if (uploadHint) {
+      uploadHint.textContent = hasPrompt
+        ? 'Ready to upload your doodle!'
+        : 'Add the prompt title before uploading your doodle.';
+    }
+  }
+
+  promptInput.addEventListener('input', syncUploadButton);
+
+  if (useCurrentPromptButton) {
+    useCurrentPromptButton.addEventListener('click', function() {
+      const p = currentPrompt();
+      if (!p) {
+        toast('Shuffle a prompt first');
+        return;
+      }
+
+      promptInput.value = promptToText(p);
+      syncUploadButton();
+      toast('Prompt added');
+    });
+  }
+
+  syncUploadButton();
+}
+    
 function setupUploadWidget() {
   const uploadButton = document.getElementById('upload_widget');
 
@@ -1066,21 +1113,23 @@ if (result && result.event === 'success') {
 
   const promptInput = document.getElementById('doodlePrompt');
 
-fetch('https://script.google.com/macros/s/AKfycbwJ3SLtKpa_wSsXPoPR1z-VDaZks05pBN1dCF8HGU0yIkmFtibENVg2sEXe2ZceXW4p/exec', {
-  method: 'POST',
-  mode: 'no-cors',
-  body: JSON.stringify({
-    prompt: promptInput ? promptInput.value : '',
-    imageUrl: result.info.secure_url
-  })
-});
+  fetch('https://script.google.com/macros/s/AKfycbwJ3SLtKpa_wSsXPoPR1z-VDaZks05pBN1dCF8HGU0yIkmFtibENVg2sEXe2ZceXW4p/exec', {
+    method: 'POST',
+    mode: 'no-cors',
+    body: JSON.stringify({
+      prompt: promptInput ? promptInput.value.trim() : '',
+      imageUrl: result.info.secure_url
+    })
+  });
 
   if (promptInput) {
     promptInput.value = '';
   }
 
+  setupDoodlePromptField();
   loadGallery();
-  toast('Doodle uploaded!');
+
+  toast('Thanks for sharing your awesome doodle! It will appear in the gallery after a few minutes.');
 }
   });
 
@@ -1097,6 +1146,7 @@ renderFavs();
 updateSaveBtn();
 saveState();
 loadGallery();
+setupDoodlePromptField();
 setupUploadWidget();
   </script>
 </body>
