@@ -1020,7 +1020,7 @@ async function loadGallery() {
       toastEl.textContent = msg;
       toastEl.classList.add('show');
       clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => toastEl.classList.remove('show'), 1200);
+      toastTimer = setTimeout(() => toastEl.classList.remove('show'), 5000);
     }
 
     btnNext.addEventListener('click', next);
