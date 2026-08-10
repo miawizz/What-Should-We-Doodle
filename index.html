@@ -325,6 +325,9 @@
   transform:scale(.95);
   transition:transform .2s ease;
 }
+    #imageLightbox.show img{
+  transform:scale(1);
+}
 
 #lightboxPrompt{
   margin-top:18px;
@@ -500,13 +503,22 @@
 </div>
   
   <footer>
-    © 2026 Mia Wisinski, Playful Heart Parenting. This app is for personal use only by those who have purchased from Playful Heart Parenting. Please do not share this link publicly or distribute without explicit permission.
+    © 2026 Mia Wisinski, Playful Heart Parenting. Thank you for supporting this work.
   </footer>
 </main>
-  <div id="toast" role="status" aria-live="polite"></div>
+<div id="toast" role="status" aria-live="polite"></div>
 
-  <script src="words.js"></script>
-  <script src="https://upload-widget.cloudinary.com/global/all.js"></script>
+<div id="imageLightbox" aria-hidden="true">
+  <button id="lightboxClose" type="button">×</button>
+
+  <div id="lightboxContent">
+    <img id="lightboxImage" src="" alt="">
+    <p id="lightboxPrompt"></p>
+  </div>
+</div>
+
+<script src="words.js"></script>
+<script src="https://upload-widget.cloudinary.com/global/all.js"></script>
 
   <script>
 
@@ -985,13 +997,6 @@ loadGallery();
 setupDoodlePromptField();
 setupUploadWidget();
   </script>
-<div id="imageLightbox" aria-hidden="true">
-  <button id="lightboxClose" type="button">×</button>
 
-  <div id="lightboxContent">
-    <img id="lightboxImage" src="" alt="">
-    <p id="lightboxPrompt"></p>
-  </div>
-</div>
 </body>
 </html>
