@@ -14,6 +14,10 @@
   <link rel="apple-touch-icon" href="WSWDgraphic.png">
 
   <style>
+.circle-mode .home-button{
+  display:none !important;
+}
+    
     :root {
       --cream:#fff9f3;
       --ink:#3c3c3c;
@@ -1002,6 +1006,16 @@ loadGallery();
 setupDoodlePromptField();
 setupUploadWidget();
   </script>
+<script>
+(function () {
+  const isCircle =
+    new URLSearchParams(window.location.search).get("circle") === "1";
 
+  if (isCircle) {
+    document.body.classList.add("circle-mode");
+  }
+})();
+</script>
+  
 </body>
 </html>
