@@ -290,6 +290,72 @@
         font-size: clamp(1.3rem, 3.4vw, 2.6rem);
       }
     }
+/* ---------- Gallery Lightbox ---------- */
+
+#imageLightbox{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.82);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  z-index:20000;
+}
+
+#imageLightbox.show{
+  display:flex;
+}
+
+#lightboxContent{
+  max-width:95vw;
+  max-height:92vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+#imageLightbox img{
+  max-width:95vw;
+  max-height:78vh;
+  object-fit:contain;
+  border-radius:18px;
+  box-shadow:0 12px 40px rgba(0,0,0,.35);
+
+  transform:scale(.95);
+  transition:transform .2s ease;
+}
+
+#lightboxPrompt{
+  margin-top:18px;
+  color:white;
+  font-size:1.15rem;
+  font-weight:700;
+  text-align:center;
+  line-height:1.4;
+  max-width:700px;
+}
+
+#lightboxClose{
+  position:fixed;
+  top:16px;
+  right:16px;
+  width:46px;
+  height:46px;
+  border:none;
+  border-radius:50%;
+  background:white;
+  color:#222;
+  font-size:30px;
+  font-weight:700;
+  cursor:pointer;
+  z-index:20001;
+}
+
+#gallery img{
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
   </style>
 </head>
 
@@ -738,6 +804,22 @@ async function loadGallery() {
       el.style.objectFit = 'cover';
       el.style.borderRadius = '16px';
       el.style.boxShadow = '0 4px 12px rgba(0,0,0,.12)';
+      
+el.addEventListener('click', () => {
+
+  const lightbox = document.getElementById('imageLightbox');
+  const lightboxImage = document.getElementById('lightboxImage');
+  const lightboxPrompt = document.getElementById('lightboxPrompt');
+
+  lightboxImage.src = item.imageUrl;
+  lightboxImage.alt = item.prompt || '';
+
+lightboxPrompt.innerHTML =
+  "<strong>Prompt:</strong> " + (item.prompt || "");
+  lightbox.classList.add('show');
+  lightbox.setAttribute('aria-hidden','false');
+
+});
 
       const caption = document.createElement('p');
       caption.textContent = item.prompt || '';
@@ -881,7 +963,20 @@ uploadButton.addEventListener('click', function() {
 uploadWidget.open();
 });
 }
-    
+ const imageLightbox = document.getElementById('imageLightbox');
+const lightboxClose = document.getElementById('lightboxClose');
+
+lightboxClose.addEventListener('click', () => {
+  imageLightbox.classList.remove('show');
+  imageLightbox.setAttribute('aria-hidden','true');
+});
+
+imageLightbox.addEventListener('click', (e) => {
+  if (e.target === imageLightbox) {
+    imageLightbox.classList.remove('show');
+    imageLightbox.setAttribute('aria-hidden','true');
+  }
+});   
 updateNav();
 renderFavs();
 updateSaveBtn();
@@ -890,5 +985,13 @@ loadGallery();
 setupDoodlePromptField();
 setupUploadWidget();
   </script>
+<div id="imageLightbox" aria-hidden="true">
+  <button id="lightboxClose" type="button">×</button>
+
+  <div id="lightboxContent">
+    <img id="lightboxImage" src="" alt="">
+    <p id="lightboxPrompt"></p>
+  </div>
+</div>
 </body>
 </html>
